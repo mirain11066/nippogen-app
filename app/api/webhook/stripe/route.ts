@@ -39,36 +39,43 @@ export async function POST(request: NextRequest) {
         const subscriptionId = session.subscription as string;
 
         if (customerEmail) {
-          // Update or create user profile with pro plan
-          const { error } = await supabaseAdmin
+          const { error: profileError } = await supabaseAdmin
             .from("user_profiles")
             .upsert(
               {
                 email: customerEmail,
                 stripe_customer_id: customerId,
                 stripe_subscription_id: subscriptionId,
+                subscription_status: "active",
                 plan: "pro",
-                updated_at: new Date().toISOString(),
               },
               { onConflict: "email" }
             );
 
-          if (error) console.error("Failed to update user profile:", error);
+          if (profileError) {
+            console.error("Failed to update user profile:", profileError);
+          } else {
+            console.log("User profile updated to pro:", customerEmail);
+          }
         }
 
-        // Log webhook event
-        await supabaseAdmin.from("webhook_events").insert({
-          event_type: event.type,
-          stripe_event_id: event.id,
-          data: {
-            customer_email: customerEmail,
-            customer_id: customerId,
-            subscription_id: subscriptionId,
-            amount_total: session.amount_total,
-          },
-        });
+        const { error: eventError } = await supabaseAdmin
+          .from("webhook_events")
+          .insert({
+            stripe_event_id: event.id,
+            event_type: event.type,
+            payload_summary: JSON.stringify({
+              customer_email: customerEmail,
+              customer_id: customerId,
+              subscription_id: subscriptionId,
+              amount_total: session.amount_total,
+            }),
+            status: "processed",
+          });
 
-        console.log(`✅ Checkout completed: ${customerEmail}`);
+        if (eventError) console.error("Failed to log webhook event:", eventError);
+
+        console.log(`Checkout completed: ${customerEmail}`);
         break;
       }
 
@@ -76,25 +83,25 @@ export async function POST(request: NextRequest) {
         const subscription = event.data.object as Stripe.Subscription;
         const customerId = subscription.customer as string;
 
-        // Downgrade to free plan
-        const { error } = await supabaseAdmin
+        const { error: profileError } = await supabaseAdmin
           .from("user_profiles")
           .update({
             plan: "free",
             stripe_subscription_id: null,
-            updated_at: new Date().toISOString(),
+            subscription_status: "canceled",
           })
           .eq("stripe_customer_id", customerId);
 
-        if (error) console.error("Failed to downgrade user:", error);
+        if (profileError) console.error("Failed to downgrade user:", profileError);
 
         await supabaseAdmin.from("webhook_events").insert({
-          event_type: event.type,
           stripe_event_id: event.id,
-          data: { customer_id: customerId },
+          event_type: event.type,
+          payload_summary: JSON.stringify({ customer_id: customerId }),
+          status: "processed",
         });
 
-        console.log(`⚠️ Subscription deleted: ${customerId}`);
+        console.log(`Subscription deleted: ${customerId}`);
         break;
       }
 
@@ -112,16 +119,17 @@ export async function POST(request: NextRequest) {
         });
 
         await supabaseAdmin.from("webhook_events").insert({
-          event_type: event.type,
           stripe_event_id: event.id,
-          data: {
+          event_type: event.type,
+          payload_summary: JSON.stringify({
             customer_id: customerId,
             customer_email: customerEmail,
             amount_due: invoice.amount_due,
-          },
+          }),
+          status: "processed",
         });
 
-        console.log(`❌ Payment failed: ${customerEmail}`);
+        console.log(`Payment failed: ${customerEmail}`);
         break;
       }
 
