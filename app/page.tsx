@@ -101,6 +101,24 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "NippoGen",
+            url: "https://nippogen-app.vercel.app",
+            description: "箇条書きを貼るだけで、AIがプロの日報・週報・報告書を自動生成",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            offers: [
+              { "@type": "Offer", price: "0", priceCurrency: "JPY", description: "Free プラン" },
+              { "@type": "Offer", price: "980", priceCurrency: "JPY", description: "Pro プラン" },
+            ],
+          }),
+        }}
+      />
       <Header
         plan={plan}
         reportsUsed={reportsUsed}
