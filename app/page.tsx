@@ -7,6 +7,7 @@ import ReportForm from "@/components/ReportForm";
 import ReportOutput from "@/components/ReportOutput";
 import UsageBadge from "@/components/UsageBadge";
 import Mascot from "@/components/Mascot";
+import GeneratingAnimation from "@/components/GeneratingAnimation";
 import TemplatePreview from "@/components/TemplatePreview";
 import { createBrowserClient } from "@supabase/ssr";
 import {
@@ -27,6 +28,7 @@ export default function HomePage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const reportsLimit =
     plan === "pro" ? PRO_TIER_MONTHLY_LIMIT : FREE_TIER_MONTHLY_LIMIT;
@@ -309,11 +311,13 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
                 <ReportForm
-                  onReportGenerated={handleReportGenerated}
+                  onReportGenerated={(response) => { setIsGenerating(false); handleReportGenerated(response); }}
+                  onGeneratingStart={() => { setIsGenerating(true); setReport(""); }}
                   disabled={isAtLimit}
                   remainingReports={remainingReports}
                 />
-                {report && <ReportOutput report={report} template="daily" plan={plan} />}
+                {isGenerating && <GeneratingAnimation />}
+                {!isGenerating && report && <ReportOutput report={report} template="daily" plan={plan} />}
               </div>
               <div className="space-y-6">
                 <UsageBadge used={reportsUsed} limit={reportsLimit} plan={plan} />

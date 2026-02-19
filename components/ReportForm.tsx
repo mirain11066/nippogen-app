@@ -9,12 +9,14 @@ import type {
 import { TEMPLATE_LABELS, TONE_LABELS, LANGUAGE_LABELS } from "@/lib/constants";
 
 interface ReportFormProps {
+  onGeneratingStart?: () => void;
   onReportGenerated: (response: GenerateReportResponse) => void;
   disabled: boolean;
   remainingReports: number;
 }
 
 export default function ReportForm({
+  onGeneratingStart,
   onReportGenerated,
   disabled,
   remainingReports,
@@ -37,6 +39,7 @@ export default function ReportForm({
     }
 
     setIsLoading(true);
+    onGeneratingStart?.();
     setError(null);
 
     try {
