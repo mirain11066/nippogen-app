@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/auth/"],
     },
-    sitemap: "https://nippogen-app.vercel.app/sitemap.xml",
+    sitemap: "https://nippogen-app.vercel.app/api/sitemap",
   };
 }
