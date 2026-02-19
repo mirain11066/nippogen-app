@@ -40,6 +40,7 @@ export default function PricingPage() {
             <li className="flex items-center gap-2">✅ 3種類のテンプレート</li>
             <li className="flex items-center gap-2">✅ トーン選択</li>
             <li className="flex items-center gap-2">✅ コピー＆ダウンロード</li>
+            <li className="flex items-center gap-2 text-gray-400">❌ PDF出力</li>
           </ul>
           <Link href="/" className="block w-full text-center bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-colors">
             現在のプラン

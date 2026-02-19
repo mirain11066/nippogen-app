@@ -381,7 +381,7 @@ export default function HomePage() {
                   <span className="text-blue-500">✓</span> 優先サポート
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-blue-500">✓</span> 履歴保存
+                  <span className="text-blue-500">✓</span> PDF出力
                 </li>
               </ul>
               <Link
