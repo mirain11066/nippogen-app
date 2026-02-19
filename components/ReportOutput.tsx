@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import ShareButton from "./ShareButton";
+import FeedbackButtons from "./FeedbackButtons";
 
 interface ReportOutputProps {
   report: string;
@@ -148,6 +149,11 @@ export default function ReportOutput({ report, template = "daily", plan = "free"
       <div className="mt-6 pt-5 border-t border-gray-100">
         <p className="text-xs text-gray-500 mb-3">この日報を共有する</p>
         <ShareButton report={report} template={template} />
+      </div>
+
+      {/* フィードバック */}
+      <div className="mt-6 pt-5 border-t border-gray-100">
+        <FeedbackButtons template={template} tone="standard" />
       </div>
     </div>
   );

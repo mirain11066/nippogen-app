@@ -6,6 +6,8 @@ import Header from "@/components/Header";
 import ReportForm from "@/components/ReportForm";
 import ReportOutput from "@/components/ReportOutput";
 import UsageBadge from "@/components/UsageBadge";
+import Mascot from "@/components/Mascot";
+import TemplatePreview from "@/components/TemplatePreview";
 import { createBrowserClient } from "@supabase/ssr";
 import {
   FREE_TIER_MONTHLY_LIMIT,
@@ -173,6 +175,9 @@ export default function HomePage() {
             <p className="mt-6 text-sm text-blue-200">
               クレジットカード不要 ・ 月5件まで無料 ・ 30秒で登録完了
             </p>
+            <div className="mt-6 flex justify-center">
+              <Mascot size="sm" expression="wink" message="お任せください！" />
+            </div>
           </div>
         </div>
       </section>
@@ -240,6 +245,17 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* テンプレートプレビュー */}
+      <section className="py-20 bg-gradient-to-br from-purple-50 to-pink-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">こんな日報が作れます</h2>
+            <p className="text-gray-600">箇条書きメモがプロの報告書に変わる様子をご覧ください</p>
+          </div>
+          <TemplatePreview />
+        </div>
+      </section>
       {/* Before/After */}
       <section className="bg-white py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
