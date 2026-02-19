@@ -63,6 +63,14 @@ export default function Header({ plan, reportsUsed, reportsLimit }: HeaderProps)
               Pro にアップグレード
             </Link>
           )}
+                   {email && (
+            <Link
+              href="/history"
+              className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              履歴
+            </Link>
+          )}
           {email ? (
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-500 hidden sm:inline">{email}</span>
