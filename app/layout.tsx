@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   },
   description,
   metadataBase: new URL(siteUrl),
+  verification: {
+    google: "KlYwHK6a2Lj9DfswJ6GhvkRjZ-u4YzXz9EqSnHh5Qgg",
+  },
   keywords: [
     "AI日報",
     "日報自動生成",
