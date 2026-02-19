@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No active subscription found" }, { status: 404 });
     }
 
-    const subscription = await stripe.subscriptions.update(
+    await stripe.subscriptions.update(
       profile.stripe_subscription_id,
       { cancel_at_period_end: true }
     );
@@ -39,11 +39,7 @@ export async function POST(request: NextRequest) {
       .update({ subscription_status: "canceling" })
       .eq("id", userId);
 
-    return NextResponse.json({
-      success: true,
-      cancel_at: subscription.cancel_at,
-      current_period_end: subscription.current_period_end,
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Cancel subscription error:", error);
     const message = error instanceof Error ? error.message : "Cancel failed";
