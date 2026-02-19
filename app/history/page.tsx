@@ -17,7 +17,10 @@ interface ReportRecord {
   tone: string;
   tokens_input: number;
   tokens_output: number;
+  bullets_input: string;
+  report_output: string;
 }
+
 
 export default function HistoryPage() {
   const [reports, setReports] = useState<ReportRecord[]>([]);
@@ -46,12 +49,13 @@ export default function HistoryPage() {
       if (profile) setPlan(profile.plan);
 
       // 履歴取得
-      const { data, error } = await supabase
+            const { data, error } = await supabase
         .from("report_history")
-        .select("*")
+        .select("id, created_at, template, tone, tokens_input, tokens_output, bullets_input, report_output")
         .eq("user_id", session.user.id)
         .order("created_at", { ascending: false })
         .limit(50);
+
 
       if (data) setReports(data);
       if (error) console.error("Failed to load history:", error);
@@ -152,32 +156,57 @@ export default function HistoryPage() {
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
+                    <div className="space-y-4">
             {reports.map((report) => (
-              <div
+              <details
                 key={report.id}
-                className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                className="bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-700 font-bold text-sm">
-                      📄
+                <summary className="p-6 cursor-pointer list-none">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-700 font-bold text-sm">
+                        📄
+                      </div>
+                      <div>
+                        <div className="font-bold text-gray-900">
+                          {formatDate(report.created_at)}
+                        </div>
+                        <div className="text-xs text-gray-500 mt-0.5">
+                          テンプレート: {report.template || "標準"} ・ 文体:{" "}
+                          {report.tone || "です・ます"}
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-bold text-gray-900">
-                        {formatDate(report.created_at)}
-                      </div>
-                      <div className="text-xs text-gray-500 mt-0.5">
-                        テンプレート: {report.template || "標準"} ・ 文体:{" "}
-                        {report.tone || "です・ます"}
-                      </div>
+                    <span className="text-sm text-blue-600 font-medium">
+                      ▼ 詳細を見る
+                    </span>
+                  </div>
+                </summary>
+                <div className="px-6 pb-6 border-t border-gray-100 pt-4">
+                  <div className="mb-4">
+                    <h4 className="text-xs font-semibold text-gray-500 mb-2">入力メモ</h4>
+                    <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 whitespace-pre-wrap">
+                      {report.bullets_input || "（データなし）"}
                     </div>
                   </div>
-                  <div className="text-xs text-gray-400">
-                    {report.tokens_input ?? 0} → {report.tokens_output ?? 0} tokens
+                  <div className="mb-4">
+                    <h4 className="text-xs font-semibold text-gray-500 mb-2">生成された日報</h4>
+                    <div className="bg-blue-50 rounded-lg p-4 text-sm text-gray-700 whitespace-pre-wrap">
+                      {report.report_output || "（データなし）"}
+                    </div>
                   </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(report.report_output || "");
+                      alert("コピーしました！");
+                    }}
+                    className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    日報をコピー
+                  </button>
                 </div>
-              </div>
+                            </details>
             ))}
           </div>
         )}

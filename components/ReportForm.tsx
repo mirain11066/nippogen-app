@@ -38,11 +38,19 @@ export default function ReportForm({
     setIsLoading(true);
     setError(null);
 
-    try {
+    try {      // Get access token
+      const { createBrowserClient } = await import("@supabase/ssr");
+      const sb = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+      const { data: { session } } = await sb.auth.getSession();
+      const accessToken = session?.access_token || null;
+
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bullets, template, tone }),
+                body: JSON.stringify({ bullets, template, tone, accessToken }),
         signal: AbortSignal.timeout(60_000),
       });
 
