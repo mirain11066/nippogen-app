@@ -64,6 +64,7 @@ export default function Header({ plan, reportsUsed, reportsLimit }: HeaderProps)
           {email ? (
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-500 hidden sm:inline">{email}</span>
+              <Link href="/account" className="text-xs text-gray-500 hover:text-purple-600 transition-colors">アカウント</Link>
               <button
                 onClick={handleLogout}
                 className="text-xs text-gray-400 hover:text-red-500 transition-colors"
