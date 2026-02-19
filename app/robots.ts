@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/auth/"],
+      disallow: ["/api/checkout", "/api/generate", "/api/webhook", "/api/test-db", "/api/cancel-subscription", "/auth/"],
     },
     sitemap: "https://nippogen-app.vercel.app/api/sitemap",
   };
