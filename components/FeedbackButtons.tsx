@@ -14,7 +14,7 @@ interface FeedbackButtonsProps {
 }
 
 export default function FeedbackButtons({ template, tone }: FeedbackButtonsProps) {
-  const [submitted, setSubmitted] = useState<"good" | "bad" | null>(null);
+  const [submitted, setSubmitted] = useState<string | null>(null);
   const [showComment, setShowComment] = useState(false);
   const [comment, setComment] = useState("");
   const [commentSent, setCommentSent] = useState(false);
