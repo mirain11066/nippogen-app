@@ -277,7 +277,7 @@ export default function HomePage() {
                   disabled={isAtLimit}
                   remainingReports={remainingReports}
                 />
-                {report && <ReportOutput report={report} />}
+                {report && <ReportOutput report={report} template="daily" />}
               </div>
               <div className="space-y-6">
                 <UsageBadge used={reportsUsed} limit={reportsLimit} plan={plan} />

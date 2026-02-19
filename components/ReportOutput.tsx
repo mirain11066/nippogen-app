@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import ShareButton from "./ShareButton";
 
 interface ReportOutputProps {
   report: string;
+  template?: string;
 }
 
-export default function ReportOutput({ report }: ReportOutputProps) {
+export default function ReportOutput({ report, template = "daily" }: ReportOutputProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -61,6 +63,12 @@ export default function ReportOutput({ report }: ReportOutputProps) {
       </div>
       <div className="bg-gray-50 rounded-xl p-5 text-sm leading-relaxed text-gray-800 whitespace-pre-wrap border border-gray-100">
         {report}
+      </div>
+
+      {/* SNS共有ボタン */}
+      <div className="mt-6 pt-5 border-t border-gray-100">
+        <p className="text-xs text-gray-500 mb-3">この日報を共有する</p>
+        <ShareButton report={report} template={template} />
       </div>
     </div>
   );
