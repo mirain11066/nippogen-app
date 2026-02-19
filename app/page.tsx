@@ -295,7 +295,7 @@ export default function HomePage() {
                   disabled={isAtLimit}
                   remainingReports={remainingReports}
                 />
-                {report && <ReportOutput report={report} template="daily" />}
+                {report && <ReportOutput report={report} template="daily" plan={plan} />}
               </div>
               <div className="space-y-6">
                 <UsageBadge used={reportsUsed} limit={reportsLimit} plan={plan} />
@@ -470,6 +470,12 @@ export default function HomePage() {
               </Link>
               <Link href="/login" className="hover:text-white transition-colors">
                 ログイン
+              </Link>
+              <Link href="/legal/tokushoho" className="hover:text-white transition-colors">
+                特定商取引法に基づく表記
+              </Link>
+              <Link href="/legal/privacy" className="hover:text-white transition-colors">
+                プライバシーポリシー
               </Link>
             </div>
             <div className="text-xs">

@@ -8,7 +8,7 @@ export default function TokushohoPage() {
           <tbody className="divide-y divide-gray-200">
             <tr>
               <td className="py-4 pr-4 font-semibold text-gray-700 align-top w-1/3">販売事業者名</td>
-              <td className="py-4 text-gray-600">牧野未來</td>
+              <td className="py-4 text-gray-600">あさひ工房</td>
             </tr>
             <tr>
               <td className="py-4 pr-4 font-semibold text-gray-700 align-top">運営責任者</td>
@@ -16,11 +16,11 @@ export default function TokushohoPage() {
             </tr>
             <tr>
               <td className="py-4 pr-4 font-semibold text-gray-700 align-top">所在地</td>
-              <td className="py-4 text-gray-600">請求があった場合に遅滞なく開示いたします</td>
+              <td className="py-4 text-gray-600">〒615-0846 京都府京都市右京区西京極徳大寺団子田町8-23</td>
             </tr>
             <tr>
               <td className="py-4 pr-4 font-semibold text-gray-700 align-top">電話番号</td>
-              <td className="py-4 text-gray-600">請求があった場合に遅滞なく開示いたします</td>
+              <td className="py-4 text-gray-600">080-9165-6303</td>
             </tr>
             <tr>
               <td className="py-4 pr-4 font-semibold text-gray-700 align-top">メールアドレス</td>
