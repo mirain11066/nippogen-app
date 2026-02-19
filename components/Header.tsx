@@ -1,4 +1,5 @@
 "use client";
+import Logo from "./Logo";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -40,10 +41,7 @@ export default function Header({ plan, reportsUsed, reportsLimit }: HeaderProps)
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-brand-700">NippoGen</span>
-          <span className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-medium">
-            AI日報
-          </span>
+          <Logo size="sm" />
         </Link>
         <div className="flex items-center gap-4">
           <div className="text-sm text-gray-600">

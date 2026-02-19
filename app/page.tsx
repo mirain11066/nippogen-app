@@ -126,10 +126,12 @@ export default function HomePage() {
       />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-300 rounded-full blur-3xl" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-10 w-72 h-72 bg-yellow-300 rounded-full blur-3xl animate-float" />
+          <div className="absolute top-40 right-20 w-64 h-64 bg-pink-300 rounded-full blur-3xl animate-float-delayed" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-300 rounded-full blur-3xl animate-float-slow" />
+          <div className="absolute bottom-20 left-1/3 w-48 h-48 bg-green-300 rounded-full blur-3xl animate-float-delayed" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
           <div className="text-center max-w-3xl mx-auto">
@@ -437,7 +439,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 py-20">
+      <section className="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
             今日から日報の時間を取り戻そう
