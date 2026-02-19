@@ -13,7 +13,7 @@ const PRO_MONTHLY_LIMIT = 100;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { bullets, template, tone, accessToken } = body;
+        const { bullets, template, tone, language, accessToken } = body;
 
     // --- Validation ---
     if (!bullets || typeof bullets !== "string" || bullets.trim().length < 10) {
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     }
 
     // --- Generate report via Claude ---
-    const result = await generateReport({ bullets, template, tone });
+       const result = await generateReport({ bullets, template, tone, language });
 
     // --- Log usage ---
     await supabaseAdmin.from("usage_records").insert({

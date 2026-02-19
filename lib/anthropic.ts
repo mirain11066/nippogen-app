@@ -21,17 +21,32 @@ interface GenerationResult {
   costUsd: number;
 }
 
+const USER_MESSAGE_PREFIX: Record<string, string> = {
+  ja: "以下の箇条書きメモから報告書を作成してください：",
+  en: "Please create a report from the following bullet-point notes:",
+  zh: "请根据以下要点笔记撰写报告：",
+  ko: "다음 메모를 바탕으로 보고서를 작성해 주세요:",
+  es: "Por favor, crea un informe a partir de las siguientes notas:",
+  fr: "Veuillez créer un rapport à partir des notes suivantes :",
+};
+
 export async function generateReport(params: {
   bullets: string;
   template: ReportTemplate;
   tone: ReportTone;
+  language?: string;
 }): Promise<GenerationResult> {
-  const systemPrompt = REPORT_SYSTEM_PROMPTS[params.template];
-  const toneInstruction = TONE_INSTRUCTIONS[params.tone];
+  const lang = params.language || "ja";
+  const langPrompts = REPORT_SYSTEM_PROMPTS[lang] || REPORT_SYSTEM_PROMPTS["ja"];
+  const langTones = TONE_INSTRUCTIONS[lang] || TONE_INSTRUCTIONS["ja"];
+
+  const systemPrompt = langPrompts[params.template];
+  const toneInstruction = langTones[params.tone];
+  const prefix = USER_MESSAGE_PREFIX[lang] || USER_MESSAGE_PREFIX["ja"];
 
   const userMessage = `${toneInstruction}
 
-以下の箇条書きメモから報告書を作成してください：
+${prefix}
 
 ${params.bullets}`;
 

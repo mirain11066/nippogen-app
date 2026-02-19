@@ -6,7 +6,7 @@ import type {
   ReportTone,
   GenerateReportResponse,
 } from "@/lib/types";
-import { TEMPLATE_LABELS, TONE_LABELS } from "@/lib/constants";
+import { TEMPLATE_LABELS, TONE_LABELS, LANGUAGE_LABELS } from "@/lib/constants";
 
 interface ReportFormProps {
   onReportGenerated: (response: GenerateReportResponse) => void;
@@ -22,6 +22,7 @@ export default function ReportForm({
   const [bullets, setBullets] = useState("");
   const [template, setTemplate] = useState<ReportTemplate>("daily");
   const [tone, setTone] = useState<ReportTone>("standard");
+  const [language, setLanguage] = useState("ja");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +39,7 @@ export default function ReportForm({
     setIsLoading(true);
     setError(null);
 
-    try {      // Get access token
+    try {
       const { createBrowserClient } = await import("@supabase/ssr");
       const sb = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -50,7 +51,7 @@ export default function ReportForm({
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ bullets, template, tone, accessToken }),
+        body: JSON.stringify({ bullets, template, tone, language, accessToken }),
         signal: AbortSignal.timeout(60_000),
       });
 
@@ -74,7 +75,7 @@ export default function ReportForm({
     } finally {
       setIsLoading(false);
     }
-  }, [bullets, template, tone, onReportGenerated]);
+  }, [bullets, template, tone, language, onReportGenerated]);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
@@ -93,7 +94,7 @@ export default function ReportForm({
         disabled={disabled || isLoading}
       />
 
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label className="block text-xs font-semibold text-gray-600 mb-1.5">テンプレート</label>
           <select
@@ -116,6 +117,19 @@ export default function ReportForm({
             disabled={disabled || isLoading}
           >
             {Object.entries(TONE_LABELS).map(([key, label]) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs font-semibold text-gray-600 mb-1.5">出力言語</label>
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+            disabled={disabled || isLoading}
+          >
+            {Object.entries(LANGUAGE_LABELS).map(([key, label]) => (
               <option key={key} value={key}>{label}</option>
             ))}
           </select>
